@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    body{
+    display: flex;
+    flex-direction: column;
+    margin:0px;
+    align-items: center;
+    background-color: #e88452;
+    justify-content: flex-start;
+    height: 100vh;
+    row-gap: 100px;
+}
+
+#ScoreBoard{
+    
+    height: 100px;
+    width:  200px;
+    border:none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    background-color: white;
+    border-bottom-left-radius: 100px;
+    border-bottom-right-radius: 100px;
+}
+
+#ScoreBoard{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    column-gap: 10px;
+    align-items: center;
+    box-sizing: border-box;
+    padding-bottom:15px;    
+}
+
+#player1score{
+   color: red;
+   font-family: Helvetica, sans-serif;
+   font-size: 40px;
+   font-weight: 900;
+}
+
+#player2score{
+   color: rgb(62, 62, 239);
+   font-family: Helvetica, sans-serif;
+   font-size: 40px;
+   font-weight: 900;
+}
+
+#dot{
+    height: 5px;
+    width:5px;
+    background-color: black;
+    border-radius: 50%;
+}
+
+.grid-container {
+  width: 500px;
+  height: 500px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: 2px; /* optional spacing */
+
+  border-radius: 30px;
+  padding:10px;
+  row-gap:10px;
+  column-gap: 10px;
+}
+
+.grid-box {
+  background-color: #e3baa5;;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 30px;
+  
+}
+
+.grid-box:hover{
+    transform: scale(1.2);
+    transition: transform ease-in-out 0.3s;
+}
+
+
+</style>
+<body>
+
+    <div id="ScoreBoard">
+        <div id="player1score">7</div>
+        <div id="dot" ></div>
+        <div id="player2score">7</div>
+
+    </div>
+
+    <div class="grid-container" id="grid"></div>
+
+    
+    
+</body>
+<script>
+    const grid = document.getElementById('grid');
+  
+    for (let row = 0; row < 5; row++) {
+      for (let col = 0; col < 5; col++) {
+        const box = document.createElement('div');
+        box.classList.add('grid-box');
+        box.id = `box-${row}-${col}`; // unique ID
+       
+        grid.appendChild(box);
+      }
+    }
+  </script>
+</html>

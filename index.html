@@ -3,121 +3,510 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Dots Game - Two Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0d0c0;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .game-container {
+            max-width: 500px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .score-board {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        
+        .player {
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 2px solid transparent;
+        }
+        
+        .player1 {
+            background-color: #ff6b6b;
+            color: white;
+        }
+        
+        .player2 {
+            background-color: #4ecdc4;
+            color: white;
+        }
+        
+        .active-player {
+            border: 2px solid #333;
+            transform: scale(1.05);
+        }
+        
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+            background-color: #e9967a;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .cell {
+            width: 60px;
+            height: 60px;
+            background-color: #ffebcd;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .cell.player1 {
+            background-color: #ffaeae;
+        }
+        
+        .cell.player2 {
+            background-color: #a0e7e0;
+        }
+        
+        .dots-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: white;
+        }
+        
+        /* Dot positions */
+        .dot-1 {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .dot-2-1 {
+            top: 30%;
+            left: 30%;
+        }
+        
+        .dot-2-2 {
+            bottom: 30%;
+            right: 30%;
+        }
+        
+        .dot-3-1 {
+            top: 25%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .dot-3-2 {
+            bottom: 25%;
+            left: 25%;
+        }
+        
+        .dot-3-3 {
+            bottom: 25%;
+            right: 25%;
+        }
+        
+        .dot-4-1 {
+            top: 25%;
+            left: 25%;
+        }
+        
+        .dot-4-2 {
+            top: 25%;
+            right: 25%;
+        }
+        
+        .dot-4-3 {
+            bottom: 25%;
+            left: 25%;
+        }
+        
+        .dot-4-4 {
+            bottom: 25%;
+            right: 25%;
+        }
+        
+        .controls {
+            margin-top: 20px;
+        }
+        
+        button {
+            padding: 10px 15px;
+            margin: 0 5px;
+            background-color: #6c5b7b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        button:hover {
+            background-color: #563d67;
+        }
+        
+        select {
+            padding: 8px;
+            margin: 10px 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+    </style>
 </head>
-<style>
-    body{
-    display: flex;
-    flex-direction: column;
-    margin:0px;
-    align-items: center;
-    background-color: #e88452;
-    justify-content: flex-start;
-    height: 100vh;
-    row-gap: 100px;
-}
-
-#ScoreBoard{
-    
-    height: 100px;
-    width:  200px;
-    border:none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    background-color: white;
-    border-bottom-left-radius: 100px;
-    border-bottom-right-radius: 100px;
-}
-
-#ScoreBoard{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    column-gap: 10px;
-    align-items: center;
-    box-sizing: border-box;
-    padding-bottom:15px;    
-}
-
-#player1score{
-   color: red;
-   font-family: Helvetica, sans-serif;
-   font-size: 40px;
-   font-weight: 900;
-}
-
-#player2score{
-   color: rgb(62, 62, 239);
-   font-family: Helvetica, sans-serif;
-   font-size: 40px;
-   font-weight: 900;
-}
-
-#dot{
-    height: 5px;
-    width:5px;
-    background-color: black;
-    border-radius: 50%;
-}
-
-.grid-container {
-  width: 500px;
-  height: 500px;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-  gap: 2px; /* optional spacing */
-
-  border-radius: 30px;
-  padding:10px;
-  row-gap:10px;
-  column-gap: 10px;
-}
-
-.grid-box {
-  background-color: #e3baa5;;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 30px;
-  
-}
-
-.grid-box:hover{
-    transform: scale(1.2);
-    transition: transform ease-in-out 0.3s;
-}
-
-
-</style>
 <body>
-
-    <div id="ScoreBoard">
-        <div id="player1score">7</div>
-        <div id="dot" ></div>
-        <div id="player2score">7</div>
-
+    <div class="game-container">
+        <h1>Two Player Dots Game</h1>
+        
+        <div class="score-board">
+            <div id="player1" class="player player1 active-player">
+                <div>Player 1</div>
+                <div>Score: <span id="score1">0</span></div>
+                <div>Wins: <span id="wins1">0</span>/2</div>
+            </div>
+            <div id="player2" class="player player2">
+                <div>Player 2</div>
+                <div>Score: <span id="score2">0</span></div>
+                <div>Wins: <span id="wins2">0</span>/2</div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <select id="grid-size">
+                <option value="4">4x4 Grid</option>
+                <option value="5" selected>5x5 Grid</option>
+                <option value="6">6x6 Grid</option>
+            </select>
+            <button id="new-game">New Game</button>
+            <button id="show-rules">Rules</button>
+        </div>
+        
+        <div id="game-grid" class="game-grid"></div>
     </div>
-
-    <div class="grid-container" id="grid"></div>
-
     
-    
+    <script>
+        // Game elements
+        const gameGrid = document.getElementById('game-grid');
+        const player1Element = document.getElementById('player1');
+        const player2Element = document.getElementById('player2');
+        const score1Element = document.getElementById('score1');
+        const score2Element = document.getElementById('score2');
+        const wins1Element = document.getElementById('wins1');
+        const wins2Element = document.getElementById('wins2');
+        const gridSizeSelect = document.getElementById('grid-size');
+        const newGameButton = document.getElementById('new-game');
+        const rulesButton = document.getElementById('show-rules');
+        
+        // Game state
+        let board = [];
+        let currentPlayer = 1;
+        let scores = { 1: 0, 2: 0 };
+        let wins = { 1: 0, 2: 0 };
+        let gridSize = 5;
+        
+        // Initialize game
+        function initGame() {
+            // Clear game state
+            gridSize = parseInt(gridSizeSelect.value);
+            board = [];
+            scores = { 1: 0, 2: 0 };
+            currentPlayer = 1;
+            
+            // Keep wins between game resets
+            
+            // Create empty board
+            for (let row = 0; row < gridSize; row++) {
+                let rowArray = [];
+                for (let col = 0; col < gridSize; col++) {
+                    rowArray.push({
+                        owner: 0,
+                        dots: 0
+                    });
+                }
+                board.push(rowArray);
+            }
+            
+            // Create grid UI
+            createGrid();
+            updateUI();
+        }
+        
+        // Create the grid UI
+        function createGrid() {
+            // Set grid columns based on size
+            gameGrid.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+            gameGrid.innerHTML = '';
+            
+            // Create cells
+            for (let row = 0; row < gridSize; row++) {
+                for (let col = 0; col < gridSize; col++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.dataset.row = row;
+                    cell.dataset.col = col;
+                    
+                    cell.addEventListener('click', () => {
+                        handleCellClick(row, col);
+                    });
+                    
+                    gameGrid.appendChild(cell);
+                }
+            }
+        }
+        
+        // Handle cell click
+        function handleCellClick(row, col) {
+            const cell = board[row][col];
+            
+            // Check if the cell is empty or owned by current player
+            if (cell.owner === 0 || cell.owner === currentPlayer) {
+                // Increment dots
+                cell.dots++;
+                
+                // If cell was empty, set owner and update score
+                if (cell.owner === 0) {
+                    cell.owner = currentPlayer;
+                    scores[currentPlayer]++;
+                }
+                
+                // Check if cell has 4 dots (explosion)
+                if (cell.dots === 4) {
+                    explodeCell(row, col);
+                }
+                
+                // Check if anyone won
+                checkWinCondition();
+                
+                // Switch player
+                switchPlayer();
+                
+                // Update UI
+                updateUI();
+            }
+        }
+        
+        // Handle cell explosion
+        function explodeCell(row, col) {
+            const cell = board[row][col];
+            
+            // Reset the cell
+            cell.dots = 0;
+            cell.owner = 0;
+            scores[currentPlayer]--;
+            
+            // Directions: up, right, down, left
+            const directions = [[-1, 0], [0, 1], [1, 0], [0, -1]];
+            
+            // Spread to adjacent cells
+            for (const [dx, dy] of directions) {
+                const newRow = row + dx;
+                const newCol = col + dy;
+                
+                // Check if within bounds
+                if (newRow >= 0 && newRow < gridSize && newCol >= 0 && newCol < gridSize) {
+                    const neighbor = board[newRow][newCol];
+                    
+                    // If neighbor is empty
+                    if (neighbor.owner === 0) {
+                        neighbor.owner = currentPlayer;
+                        scores[currentPlayer]++;
+                    }
+                    // If neighbor belongs to opponent
+                    else if (neighbor.owner !== currentPlayer) {
+                        scores[neighbor.owner]--;
+                        scores[currentPlayer]++;
+                        neighbor.owner = currentPlayer;
+                    }
+                    
+                    // Add a dot
+                    neighbor.dots++;
+                    
+                    // Check for chain reaction
+                    if (neighbor.dots === 4) {
+                        // Use setTimeout to allow UI to update between chain reactions
+                        setTimeout(() => {
+                            explodeCell(newRow, newCol);
+                            updateUI();
+                        }, 50);
+                    }
+                }
+            }
+        }
+        
+        // Check win condition
+        function checkWinCondition() {
+            const totalCells = gridSize * gridSize;
+            
+            // Check if current player has all cells
+            if (scores[currentPlayer] === totalCells) {
+                wins[currentPlayer]++;
+                
+                if (wins[currentPlayer] >= 2) {
+                    // Game over - player wins
+                    setTimeout(() => {
+                        alert(`Player ${currentPlayer} wins the game!`);
+                        // Reset wins and start a new game
+                        wins = { 1: 0, 2: 0 };
+                        initGame();
+                    }, 100);
+                } else {
+                    // Player got 1 win, reset the board for next round
+                    setTimeout(() => {
+                        alert(`Player ${currentPlayer} dominates the board! (${wins[currentPlayer]}/2 wins)`);
+                        
+                        // Reset board but keep wins
+                        board = [];
+                        scores = { 1: 0, 2: 0 };
+                        
+                        // Create new empty board
+                        for (let row = 0; row < gridSize; row++) {
+                            let rowArray = [];
+                            for (let col = 0; col < gridSize; col++) {
+                                rowArray.push({
+                                    owner: 0,
+                                    dots: 0
+                                });
+                            }
+                            board.push(rowArray);
+                        }
+                        
+                        // Switch player for fairness
+                        switchPlayer();
+                        
+                        // Update UI
+                        createGrid();
+                        updateUI();
+                    }, 100);
+                }
+            }
+        }
+        
+        // Switch player
+        function switchPlayer() {
+            currentPlayer = currentPlayer === 1 ? 2 : 1;
+        }
+        
+        // Update UI
+        function updateUI() {
+            // Update player indicators
+            player1Element.classList.toggle('active-player', currentPlayer === 1);
+            player2Element.classList.toggle('active-player', currentPlayer === 2);
+            
+            // Update scores and wins
+            score1Element.textContent = scores[1];
+            score2Element.textContent = scores[2];
+            wins1Element.textContent = wins[1];
+            wins2Element.textContent = wins[2];
+            
+            // Update cells
+            const cells = gameGrid.querySelectorAll('.cell');
+            
+            cells.forEach((cell) => {
+                const row = parseInt(cell.dataset.row);
+                const col = parseInt(cell.dataset.col);
+                const cellData = board[row][col];
+                
+                // Clear cell classes
+                cell.className = 'cell';
+                
+                // Add player class if owned
+                if (cellData.owner === 1) {
+                    cell.classList.add('player1');
+                } else if (cellData.owner === 2) {
+                    cell.classList.add('player2');
+                }
+                
+                // Add dots
+                cell.innerHTML = '';
+                if (cellData.dots > 0) {
+                    const dotsContainer = document.createElement('div');
+                    dotsContainer.className = 'dots-container';
+                    
+                    // Add dots based on count
+                    for (let i = 1; i <= cellData.dots; i++) {
+                        const dot = document.createElement('div');
+                        dot.className = 'dot';
+                        
+                        if (cellData.dots === 1) {
+                            dot.classList.add('dot-1');
+                        } else if (cellData.dots === 2) {
+                            dot.classList.add(`dot-2-${i}`);
+                        } else if (cellData.dots === 3) {
+                            dot.classList.add(`dot-3-${i}`);
+                        } else if (cellData.dots === 4) {  // Should never reach 4, but just in case
+                            dot.classList.add(`dot-4-${i}`);
+                        }
+                        
+                        dotsContainer.appendChild(dot);
+                    }
+                    
+                    cell.appendChild(dotsContainer);
+                }
+            });
+        }
+        
+        // Show rules
+        function showRules() {
+            alert(`DOTS GAME RULES:
+
+1. Players take turns adding one dot to any empty cell or a cell they already own.
+2. When a cell contains 4 dots, it explodes and spreads to adjacent cells.
+3. When a dot spreads to an opponent's cell, it changes ownership.
+4. A player wins a round when they control every cell on the board.
+5. First player to win 2 rounds wins the game.
+
+Good luck!`);
+        }
+        
+        // Event listeners
+        newGameButton.addEventListener('click', () => {
+            // Confirm reset
+            if (wins[1] > 0 || wins[2] > 0) {
+                if (confirm("Start a new game? This will reset all wins.")) {
+                    wins = { 1: 0, 2: 0 };
+                    initGame();
+                }
+            } else {
+                initGame();
+            }
+        });
+        
+        rulesButton.addEventListener('click', showRules);
+        
+        gridSizeSelect.addEventListener('change', () => {
+            if (confirm("Change grid size? This will start a new game.")) {
+                wins = { 1: 0, 2: 0 };
+                initGame();
+            } else {
+                // Reset select to current grid size
+                gridSizeSelect.value = gridSize;
+            }
+        });
+        
+        // Initialize the game
+        initGame();
+    </script>
 </body>
-<script>
-    const grid = document.getElementById('grid');
-  
-    for (let row = 0; row < 5; row++) {
-      for (let col = 0; col < 5; col++) {
-        const box = document.createElement('div');
-        box.classList.add('grid-box');
-        box.id = `box-${row}-${col}`; // unique ID
-       
-        grid.appendChild(box);
-      }
-    }
-  </script>
 </html>
+
